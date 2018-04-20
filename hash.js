@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 class HashList {
     constructor() {
         this.head = null;
@@ -24,11 +25,11 @@ class HashTable{
 
     hash(key) {
         let value = 0;
-        for (let i = 0; i < key.length; i++) {
-            value += key.charCodeAt(i);
+        let data = crypto.createHash('sha256').update(key).digest("hex");
+        for(let i = 0; i < data.length; i++){
+            value += (data.charCodeAt(i));
         }
-        let hash = value % this.data.length;
-        return hash;
+        return value % this.data.length;
     }
 
     add(key,val){
@@ -119,24 +120,29 @@ class HashTable{
     }
 }
 
-let newHash = new HashTable(10);
+let newHash = new HashTable(20);
+console.log(newHash.hash('team'));
+console.log(newHash.hash('eamt'));
+console.log(newHash.hash('amte'));
+console.log(newHash.hash('mtea'));
+console.log(newHash.hash('etma'));
+// let key = "key";
+// let val = 1;
 
-let key = "key";
-let val = 1;
+// while(newHash.loadFactor < 3){
+//     newHash.add(key, val);
+//     key += Math.random().toString(36);
+//     val++;
+//     console.log(newHash.loadFactor)
+// }
 
-while(newHash.loadFactor < 3){
-    newHash.add(key, val);
-    key += Math.random().toString(36);
-    val++;
-    console.log(newHash.loadFactor)
-}
-console.log("hash table size: " + newHash.data.length)
-console.log("items contained: " + newHash.length)
-console.log("loadfactor: " + newHash.loadFactor)
-newHash.add("test", "reset");
-console.log("hash table size: " + newHash.data.length)
-console.log("items contained: " + newHash.length)
-console.log("loadfactor: " + newHash.loadFactor)
+// console.log("hash table size: " + newHash.data.length)
+// console.log("items contained: " + newHash.length)
+// console.log("loadfactor: " + newHash.loadFactor)
+// newHash.add("test", "reset");
+// console.log("hash table size: " + newHash.data.length)
+// console.log("items contained: " + newHash.length)
+// console.log("loadfactor: " + newHash.loadFactor)
 
 // newHash.add('name', 'devon');
 // newHash.add('age', 29);
